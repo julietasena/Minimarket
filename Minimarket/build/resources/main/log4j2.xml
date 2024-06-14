@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Appenders>
+        <!-- Definir un appender para archivo -->
+        <File name="FileLogger" fileName="logs/app.log" append="true">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"/>
+        </File>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+        </Console>
+        <SMTP name="SMTP" subject="Finalizacion de Programa" to="luciano.reggio@alumnos.frm.utn.edu.ar"
+              from="luciano.reggio@alumnos.frm.utn.edu.ar" smtpHost="smtp.alumnos.frm.utn.edu.ar" smtpPort="25"
+              smtpUsername="luciano.reggio@alumnos.frm.utn.edu.ar" smtpPassword="bancorugbyclub" smtpProtocol="smtp">
+
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level - %msg%n" />
+        </SMTP>
+
+    </Appenders>
+
+    <Loggers>
+        <Logger name="ConsoleLogger" level="INFO" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
+
+        <!-- Logger específico para el archivo -->
+        <Logger name="FileLogger" level="WARN" additivity="false">
+            <AppenderRef ref="FileLogger"/>
+        </Logger>
+        <!-- Definir el logger root -->
+        <Logger name="mail" level="ERROR" additivity="false">
+            <AppenderRef ref="SMTP" level="ERROR"/>
+        </Logger>
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="FileLogger"/>
+        </Root>
+
+    </Loggers>
+</Configuration>
